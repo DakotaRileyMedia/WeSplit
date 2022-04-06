@@ -13,7 +13,7 @@ struct ContentView: View {
     @State private var tipPercentage = 20
     @FocusState private var amountIsFocused: Bool
     
-    var currency: FloatingPointFormatStyle<Double>.Currency {
+    var localCurrency: FloatingPointFormatStyle<Double>.Currency {
         .currency(code: Locale.current.currencyCode ?? "USD")
     }
     
@@ -29,7 +29,7 @@ struct ContentView: View {
         return amountPerPerson
     }
     
-    var totalBeforeSplit: Double {
+    var grandTotal: Double {
         // Calculate total before splitting check
         let tipSelection = Double(tipPercentage)
         
@@ -66,15 +66,16 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Text(totalPerPerson, format: currency)
+                    Text(grandTotal , format: localCurrency)
+                        .foregroundColor(tipPercentage == 0 ? .red : .primary)
                 } header: {
-                    Text("Amount per person")
+                    Text("Total amount")
                 }
                 
                 Section {
-                    Text(totalBeforeSplit, format: currency)
+                    Text(totalPerPerson, format: localCurrency)
                 } header: {
-                    Text("Total before split")
+                    Text("Amount per person")
                 }
             }
             .navigationTitle("WeSplit")
